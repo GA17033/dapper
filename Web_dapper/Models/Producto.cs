@@ -10,7 +10,7 @@ namespace Web_dapper.Models
         public string Name { get; set; }
         [Required]
         public float Price { get; set; }
-       
-        public bool State { get; set; } 
+
+        public bool State { get; set; } = true;
     }
 }
