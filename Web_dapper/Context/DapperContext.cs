@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Data.SqlClient;
+using Web_dapper.Models;
 
 namespace Web_dapper.Context
 {
@@ -21,6 +22,8 @@ namespace Web_dapper.Context
             return new MySqlConnection(_connectionString);
         }
         
+
+        public Producto producto { get; set; }
 
 
     }

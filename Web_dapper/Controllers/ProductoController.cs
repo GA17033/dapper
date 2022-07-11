@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Dapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Web_dapper.Context;
 using Web_dapper.Models;
-using Web_dapper.Repository;
+
 
 namespace Web_dapper.Controllers
 {
@@ -11,18 +15,24 @@ namespace Web_dapper.Controllers
     [ApiController]
     public class ProductoController : ControllerBase
     {
-        private readonly IProductoRepository _productoRepository;
+      
+        private readonly DapperContext _dapperContext;
 
-        public ProductoController(IProductoRepository productoRepository)
+        public ProductoController(DapperContext dapperContext)
         {
-            _productoRepository = productoRepository;
+            _dapperContext = dapperContext;
         }
-
         [HttpGet("GetAll")]
-        public async Task<ActionResult> Get()
+       public IActionResult GetAll()
         {
-            var productos = await _productoRepository.GetAll();
-            return Ok(productos);
+            var sql = "SELECT * FROM producto";
+            using (var connection = _dapperContext.CreateConnection())
+            {
+                connection.Open();
+                var result = connection.Query<Producto>(sql);
+                return Ok(result);
+            }
         }
+        
     }
 }

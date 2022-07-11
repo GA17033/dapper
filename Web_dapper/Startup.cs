@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web_dapper.Context;
-using Web_dapper.Repository;
+
 
 namespace Web_dapper
 {
@@ -27,7 +27,7 @@ namespace Web_dapper
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<DapperContext>();
-            services.AddScoped<IProductoRepository, ProductoRepository>();            
+                     
             services.AddControllers();
         }
 
