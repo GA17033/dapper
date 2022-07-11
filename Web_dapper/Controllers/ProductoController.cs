@@ -106,5 +106,46 @@ namespace Web_dapper.Controllers
             }
         }
 
+        //soft delete
+        [HttpPut("Update/{id}")]
+        public IActionResult Update(int id, [FromForm] Producto producto)
+        {
+            var sql = "UPDATE producto SET Name=@Name, Price=@Price WHERE ProductoId=@id";
+            using (var connection = _dapperContext.CreateConnection())
+            {
+                connection.Open();
+            
+                var result = connection.Execute(sql, new { Name = producto.Name, Price = producto.Price, Id = id });
+                var response = new
+                {
+                    Status = 200,
+                    Message = "Producto Actualizado",
+                    Data = producto
+                };
+                return Ok(response);
+            }
+        }
+
+        [HttpPut("DeleteSoft/{id}")]
+        public IActionResult DeleteSoft(int id)
+        {
+            //producto.State = false;
+            
+            var sql = "UPDATE producto SET State=false WHERE ProductoId=@id";
+            using (var connection = _dapperContext.CreateConnection())
+            {
+                connection.Open();
+
+                var result = connection.Execute(sql, new { Id = id });
+                var response = new
+                {
+                    Status = 200,
+                    Message = "Producto Eliminado Con Soft Delete",
+                    Data = result
+                };
+                return Ok(response);
+            }
+        }
+
     }
 }
